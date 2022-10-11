@@ -14,6 +14,12 @@ module.exports = {
       password: "mySQLpass_22",
       database: "mpv_wallet_service",
     },
+    migrations: {
+      directory: __dirname + "/knex/migrations"
+    },
+    seeds: {
+      directory: __dirname + "./knex/seeds"
+    }
   },
 
   // staging: {
