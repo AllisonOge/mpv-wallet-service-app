@@ -1,15 +1,14 @@
 const express = require("express");
-const { validateUser } = require("./../schemas/schemas");
-const database = require("./../knex/database");
+const { body } = require("express-validator");
+const { authController } = require("../controllers/auth");
 
 const router = express.Router();
 
-router.post("/", (req, res, next) => {
-  const currentUser = { ...req.body };  
-  console.log(validateUser(currentUser))
-  console.log(currentUser);
+router.post(
+  "/",
+  body("username").isEmail(),
+  body("password").isStrongPassword(),
+  authController
+);
 
-  res.status(200).send({...currentUser})
-});
-
-module.exports = router
+module.exports = router;
