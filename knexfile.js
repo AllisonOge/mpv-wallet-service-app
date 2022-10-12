@@ -1,6 +1,4 @@
-const dotenv = require("dotenv")
-
-dotenv.config()
+const config = require("./configs")
 
 // Update with your config settings.
 
@@ -12,11 +10,11 @@ module.exports = {
     client: "mysql",
     version: "14.14",
     connection: {
-      host: process.env.DATABASE_HOSTNAME,
-      port: process.env.DATABASE_PORT,
-      user: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
+      host: config.host,
+      port: config.port,
+      user: config.user,
+      password: config.password,
+      database: config.database,
     },
     migrations: {
       directory: __dirname + "/knex/migrations"
