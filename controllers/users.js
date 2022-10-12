@@ -25,6 +25,11 @@ exports.usersController = async (req, res, next) => {
       // TODO: error handling
       console.log(error);
       // email already exist
+      return res
+        .status(409)
+        .send({
+          details: `Duplicate entry: ${req.body.username} already exist`,
+        });
     })
     .then((id) => {
       id = id[0];
