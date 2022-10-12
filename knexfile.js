@@ -1,3 +1,7 @@
+const dotenv = require("dotenv")
+
+dotenv.config()
+
 // Update with your config settings.
 
 /**
@@ -8,11 +12,11 @@ module.exports = {
     client: "mysql",
     version: "14.14",
     connection: {
-      host: "localhost",
-      port: 3306,
-      user: "root",
-      password: "mySQLpass_22",
-      database: "mpv_wallet_service",
+      host: process.env.DATABASE_HOSTNAME,
+      port: process.env.DATABASE_PORT,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
     },
     migrations: {
       directory: __dirname + "/knex/migrations"
