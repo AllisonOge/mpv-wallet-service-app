@@ -5,39 +5,12 @@ const database = require("./../knex/database");
 const config = require("../configs");
 
 const createAccessToken = (user) => {
-  const today = new Date();
-  const expiration =
-    today.getUTCMinutes() + parseInt(config.accessTokenExpiresMins);
-  const to_encode = { id: user.id, exp: expiration };
-
-  return jwt.sign(to_encode, config.secretKey);
+  const to_encode = { id: user.id, exp: parseInt(config.accessTokenExpiresMins) };
+  console.log(to_encode)
+  return jwt.sign(to_encode, config.secretKey, { algorithm: config.algorithm });
 };
 
-const verifyAccessToken = async (token, res) => {
-  const payload = jwt.decode(token, { complete: true });
-  if (!payload) {
-    return res
-      .status(401)
-      .header({ "WWW-Authenticate": "Bearer" })
-      .send({ details: "User's credentials could not be verified" });
-  }
-
-  if (!payload.hasOwnProperty("id")) {
-    return res
-      .status(401)
-      .header({ "WWW-Authenticate": "Bearer" })
-      .send({ details: "User's credentials could not be verified" });
-  }
-
-  return { id: payload["id"] };
-};
-
-const getCurrentUser = async (token, res) => {
-  const payload = await verifyAccessToken(token, res);
-  return database.select("*").from("users").where({ id: payload.id });
-};
-
-const authController = (req, res, next) => {
+exports.authController = (req, res, next) => {
   // validate request body
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -53,7 +26,10 @@ const authController = (req, res, next) => {
     .where({ email: req.body.username })
     .then(async (user) => {
       // verify user's credential
-      const validPassword = await bcrypt.compare(password, user.password);
+      const validPassword = await bcrypt.compare(
+        req.body.password,
+        user[0].password
+      );
 
       if (!validPassword)
         return res
@@ -62,7 +38,7 @@ const authController = (req, res, next) => {
           .send({ details: "User's credentials could not be verified" });
 
       // create and assign a token
-      const token = createAccessToken(user);
+      const token = createAccessToken(user[0]);
 
       res
         .status(200)
@@ -70,9 +46,4 @@ const authController = (req, res, next) => {
         .send({ token: token, token_type: "Bearer" });
     })
     .catch(console.log);
-};
-
-module.exports = {
-  authController,
-  getCurrentUser,
 };
