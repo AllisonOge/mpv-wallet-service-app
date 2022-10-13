@@ -15,8 +15,8 @@ exports.authController = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     // TODO: throw error for error handling
-    res.status(422).send({
-      details: `Expected format: { username: <String>, password: <String> }.`,
+    return res.status(400).send({
+      details: errors.array(),
     });
   }
   // find user in database

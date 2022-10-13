@@ -1,13 +1,23 @@
 const express = require("express");
-const { body } = require("express-validator");
+const { checkSchema } = require("express-validator");
 const { authController } = require("../controllers/auth");
 
 const router = express.Router();
 
 router.post(
   "/",
-  body("username").notEmpty().isEmail(),
-  body("password").notEmpty().isStrongPassword(),
+  checkSchema({
+    username: {
+      isEmail: true,
+      notEmpty: true,
+      errorMessage: "Email should be valid",
+    },
+    password: {
+      isString: true,
+      errorMessage:
+        "Password must be a string",
+    },
+  }),
   authController
 );
 
