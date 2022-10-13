@@ -18,6 +18,10 @@ What error codes and status codes can a user expect?
 
 -`HTTP_409_CONFLICT`: Duplicate entry: user@email.com already exists
 
+-`HTTP_409_CONFLICT`: Duplicate entry: account already exists
+
+-`HTTP_401_UNAUTHORIZED`: Access Denied/Unauthorized request 
+
 -`HTTP_401_UNAUTHORIZED`: User's credentials could not be verified 
 
 ## Endpoints
