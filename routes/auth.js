@@ -10,7 +10,7 @@ router.post(
     username: {
       isEmail: true,
       notEmpty: true,
-      errorMessage: "Email should be valid",
+      errorMessage: "Email must be valid",
     },
     password: {
       isString: true,

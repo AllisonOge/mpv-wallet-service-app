@@ -16,7 +16,7 @@ router.post(
     password: {
       isStrongPassword: true,
       errorMessage:
-        "Password must be at least 8 chars with at least 1 uppercase letter, 1 numeric and symbols",
+        "Password must be at least 8 characters long with a combination of at least an uppercase character, a lowercase character, a digit and a symbol",
     },
   }),
   usersController
