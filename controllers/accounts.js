@@ -50,6 +50,9 @@ exports.accountsController = (req, res, next) => {
       })
       .catch((err) => {
         console.log(err);
+        res
+          .status(409)
+          .send({ details: "Duplicate entry: account already created" });
       });
   }
 };
