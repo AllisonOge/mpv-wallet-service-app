@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post(
   "/",
-  body("username").isEmail(),
-  body("password").isStrongPassword(),
+  body("username").notEmpty().isEmail(),
+  body("password").notEmpty().isStrongPassword(),
   authController
 );
 
