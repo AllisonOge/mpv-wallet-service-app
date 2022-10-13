@@ -5,8 +5,8 @@ const database = require("./../knex/database");
 exports.usersController = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).send({
-      error: `Expected format: { username: <String>, password: <String> }.`,
+    return res.status(400).send({
+      error: errors.array(),
     });
   }
 
