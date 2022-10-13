@@ -9,13 +9,6 @@ exports.transactionsController = (req, res, next) => {
     .select("*")
     .from("accounts")
     .where({ user_id: currentUser.id })
-    .catch((error) => {
-      console.log(error)
-      // user account does not exits (user yet to open account)
-      res
-        .status(404)
-        .send({ details: `User ${currentUser.id} does not have an account` });
-    })
     .then((account) => {
       console.log(account);
       return database
@@ -23,11 +16,14 @@ exports.transactionsController = (req, res, next) => {
         .from("transactions")
         .where({ account_id: account[0].id });
     })
-    .catch((error) => {
-        console.log(error)
-    })
     .then(transactions => {
         console.log(transactions)
         res.status(200).send(transactions || [])
+    }).catch((error) => {
+      console.log(error)
+      // user account does not exits (user yet to open account)
+      res
+        .status(404)
+        .send({ details: `User ${currentUser.id} does not have an account` });
     });
 };
