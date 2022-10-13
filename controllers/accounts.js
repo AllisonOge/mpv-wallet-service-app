@@ -1,7 +1,9 @@
 const { validationResult } = require("express-validator");
 const database = require("../knex/database");
+const { makeTransaction, getAccount } = require("../utils/utils");
 
-exports.accountsController = (req, res, next) => {
+// open an account
+exports.openAccountController = (req, res, next) => {
   // validate request body
   const errors = validationResult(req);
 
@@ -22,17 +24,15 @@ exports.accountsController = (req, res, next) => {
           .where({ user_id: req.currentUser.id });
       })
       .then((account) => {
-        return database
-          .insert({
-            action: "deposit",
-            amount: req.body.amount,
-            beneficiary: account[0].id,
-            account_id: account[0].id,
-          })
-          .into("transactions");
+        return makeTransaction(
+          "deposit",
+          req.body.amount,
+          account[0].id,
+          account[0].id
+        );
       })
       .then((_) => {
-        res.status(200).send({ message: "Account successfully created" });
+        res.status(201).send({ message: "Account successfully created" });
       })
       .catch((err) => {
         console.log(err);
@@ -46,7 +46,7 @@ exports.accountsController = (req, res, next) => {
       .insert({ user_id: req.currentUser.id })
       .into("accounts")
       .then((_) => {
-        res.status(200).send({ message: "Account successfully created" });
+        res.status(201).send({ message: "Account successfully created" });
       })
       .catch((err) => {
         console.log(err);
@@ -55,4 +55,17 @@ exports.accountsController = (req, res, next) => {
           .send({ details: "Duplicate entry: account already created" });
       });
   }
+};
+
+// get an account
+exports.getAccountController = async (req, res, next) => {
+  const accountId = req.currentUser.id;
+
+  const account = await getAccount(accountId).catch((err) => {
+    console.log(err)
+    // user has no account
+    res.status(404).send({ details: "User does not have an account" });
+  });
+  
+  res.status(200).send(account);
 };
