@@ -7,7 +7,7 @@ exports.accountsController = (req, res, next) => {
 
   if (!errors.isEmpty()) {
     // TODO: error handling
-    res.status(422).send({ details: "Expected format: { amount: <Integer> }" });
+    return res.status(422).send({ details: errors.array() });
   }
 
   // open an account with deposited amount
@@ -26,7 +26,7 @@ exports.accountsController = (req, res, next) => {
           .insert({
             action: "deposit",
             amount: req.body.amount,
-            beneficiary: req.currentUser.id,
+            beneficiary: account[0].id,
             account_id: account[0].id,
           })
           .into("transactions");
