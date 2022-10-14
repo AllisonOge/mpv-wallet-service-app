@@ -62,6 +62,7 @@ exports.transfersController = async (req, res, next) => {
   // for the beneficiary
   const transactionBeneficiary = await makeTransaction(
     "transfer",
+    req.body.amount,
     req.body.beneficiary,
     req.body.beneficiary
   ).catch(console.log);
