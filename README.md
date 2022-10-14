@@ -63,13 +63,15 @@ HTTP Exceptions with `/accounts` endpoint
 
 - `HTTP_409_CONFLICT`: Duplicate entry: account already exists
 
-- `HTTP_404_NOT_FOUND`: User does not have an account
+- `HTTP_404_NOT_FOUND`: User {id} does not have an account
 
 ### Transfers
 
 HTTP Exceptions with `/transfers` endpoint
 
-- `HTTP_400_BAD_REQUEST`: User does not have an account  
+- `HTTP_403_FORBIDDEN`: Amount is invalid: enter a value greater than 0
+
+- `HTTP_400_BAD_REQUEST`: User {id} does not have an account  
 
 - `HTTP_409_CONFLICT`: Insufficient balance
 
@@ -79,10 +81,23 @@ HTTP Exceptions with `/transfers` endpoint
 
 ### Deposits
 
+HTTP Exceptions with `/deposits` endpoint
 
+- `HTTP_403_FORBIDDEN`: Amount is invalid: enter a value greater than 0
+
+- `HTTP_404_NOT_FOUND`: User {id} does not have an account
+
+- `HTTP_409_CONFLICT`: Insufficient balance
 
 ### Withdrawals
 
+HTTP Exceptions with `/withdrawals` endpoint
+
+- `HTTP_403_FORBIDDEN`: Amount is invalid: enter a value greater than 0
+
+- `HTTP_404_NOT_FOUND`: User {id} does not have an account
+
+- `HTTP_409_CONFLICT`: Insufficient balance
 
 ## Transactions
 
