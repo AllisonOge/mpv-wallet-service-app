@@ -15,24 +15,32 @@ exports.transfersController = async (req, res, next) => {
       details: errors.array(),
     });
 
+  const amount = parseFloat(req.body.amount);
+  const beneficiaryId = parseInt(req.body.beneficiary);
+
+  if (amount <= 0)
+    return next(
+      handleError("Amount is invalid: enter a value greater than 0", 403)
+    );
+
   // get user account
   const usersAcc = await getAccount(req.currentUser.id);
 
   if (!usersAcc) return next(handleError("User does not have an account", 400));
 
   // sufficient balance?
-  const sufficientBal = usersAcc.balance >= req.body.amount ? true : false;
+  const sufficientBal = usersAcc.balance >= amount ? true : false;
 
   // console.log(sufficientBal);
   if (!sufficientBal) return next(handleError("Insufficient balance", 409));
 
   // get beneficiary
-  const beneficiary = await getAccount(req.body.beneficiary);
+  const beneficiary = await getAccount(beneficiaryId);
 
   // console.log(beneficiary);
   // does not exit
   if (!beneficiary)
-    return next(handleError(404, `Account ${req.body.beneficiary} not found`));
+    return next(handleError(404, `Account ${beneficiaryId} not found`));
 
   if (usersAcc.id == beneficiary.id)
     return next(
@@ -43,37 +51,32 @@ exports.transfersController = async (req, res, next) => {
   // for the user
   const transactionUser = await makeTransaction(
     "transfer",
-    req.body.amount,
-    req.body.beneficiary,
+    amount,
+    beneficiaryId,
     usersAcc.id
   );
 
-  if (!transactionUser)
-    return next(
-      handleError()
-    );
+  if (!transactionUser) return next(handleError());
 
   // update the balance
-  const newBalanceUser = usersAcc.balance - req.body.amount;
-  await updateBalance(newBalanceUser, usersAcc.id);
-     
+  const newBalanceUser = usersAcc.balance - amount;
+  if (!(await updateBalance(newBalanceUser, usersAcc.id)))
+    return next(handleError());
 
   // for the beneficiary
   const transactionBeneficiary = await makeTransaction(
     "transfer",
-    req.body.amount,
-    req.body.beneficiary,
-    req.body.beneficiary
-  )
+    amount,
+    beneficiaryId,
+    beneficiaryId
+  );
 
-  if (!transactionBeneficiary)
-    return next(
-      handleError()
-    );
+  if (!transactionBeneficiary) return next(handleError());
 
   // update the balance
-  const newBalanceBeneficiary = beneficiary.balance + req.body.amount;
-  await updateBalance(newBalanceBeneficiary, beneficiary.id);
+  const newBalanceBeneficiary = beneficiary.balance + amount;
+  if (!(await updateBalance(newBalanceBeneficiary, beneficiary.id)))
+    return next(handleError());
 
   res.status(201).send({ message: "Transfer successful" });
 };

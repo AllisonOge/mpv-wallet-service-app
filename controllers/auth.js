@@ -7,7 +7,7 @@ const { handleError } = require("../utils/utils");
 
 const createAccessToken = (user) => {
   const to_encode = { id: user.id, exp: parseInt(config.accessTokenExpiresMins) };
-  console.log(to_encode)
+  // console.log(to_encode)
   return jwt.sign(to_encode, config.secretKey, { algorithm: config.algorithm });
 };
 
