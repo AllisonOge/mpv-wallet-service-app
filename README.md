@@ -10,7 +10,8 @@ A simple REST API with authentication for a wallet service. Tech stack used incl
 
 ### Database Structure
 
-
+![mvp-wallet-service](./public/images/MVP-wallet-service.png)
+[Check out my LucidChart](https://lucid.app/lucidchart/c2db75ac-0891-4536-b2b1-20e8a0fe15be/edit?view_items=yRKqh-dGCGV0%2CyRKq2mg3OX13%2CyRKqHCDikTjn%2CJ5XZow_X1SGc%2CyRKqP32DqN0h&invitationId=inv_8009efb7-ba86-4b6d-9efc-b65b14d7d517#)
 
 ## Overview
 
@@ -34,13 +35,15 @@ HTTP Exceptions across all endpoints except authentication
 
 - `HTTP_401_UNAUTHORIZED`: User's credentials could not be verified 
 
+- `HTTP_422_UNPROCESSABLE`: "Invalid token"
+
 ### Authentication
 
 HTTP Exceptions with `/login` endpoint
 
-- `HTTP_400_BAD_REQUEST`: Password must be a string
+- `HTTP_422_UNPROCESSABLE`: Email must be valid
 
-- `HTTP_400_BAD_REQUEST`: Email must be valid
+- `HTTP_422_UNPROCESSABLE`: Password must be a string
 
 - `HTTP_401_UNAUTHORIZED`: User's credentials could not be verified 
 
@@ -48,9 +51,9 @@ HTTP Exceptions with `/login` endpoint
 
 HTTP Exceptions with `/users` endpoint
 
-- `HTTP_400_BAD_REQUEST`: Password must be at least 8 characters long with a combination of at least an uppercase character, a lowercase character, a digit and a symbol
+- `HTTP_422_UNPROCESSABLE`: Email must be valid
 
-- `HTTP_400_BAD_REQUEST`: Email must be valid
+- `HTTP_422_UNPROCESSABLE`: Password must be at least 8 characters long with a combination of at least an uppercase character, a lowercase character, a digit and a symbol
 
 - `HTTP_409_CONFLICT`: Duplicate entry: user@email.com already exists
 
@@ -66,11 +69,13 @@ HTTP Exceptions with `/accounts` endpoint
 
 HTTP Exceptions with `/transfers` endpoint
 
-- `HTTP_404_NOT_FOUND`: User does not have an account 
+- `HTTP_400_BAD_REQUEST`: User does not have an account  
 
 - `HTTP_409_CONFLICT`: Insufficient balance
 
-- `HTTP_409_CONFLICT`: Restricted request: cannot transfer to self
+- `HTTP_404_NOT_FOUND`: Account {id} not found
+
+- `HTTP_403_FORBIDDEN`: Restricted request: cannot transfer to self
 
 ### Deposits
 
@@ -79,6 +84,11 @@ HTTP Exceptions with `/transfers` endpoint
 ### Withdrawals
 
 
+## Transactions
+
+HTTP Exceptions with `/transactions` endpoint
+
+- `HTTP_404_NOT_FOUND`: User {id} does not have an account
 
 ## Endpoints
 
