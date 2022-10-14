@@ -60,7 +60,10 @@ exports.getAccountController = async (req, res, next) => {
 
   const account = await getAccount(accountId);
 
-  if (!account) return next(handleError("User does not have an account", 404));
+  if (!account)
+    return next(
+      handleError(`User ${req.currentUser.id} does not have an account`, 404)
+    );
 
   res.status(200).send(account);
 };

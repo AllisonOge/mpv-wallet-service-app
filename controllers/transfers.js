@@ -26,7 +26,10 @@ exports.transfersController = async (req, res, next) => {
   // get user account
   const usersAcc = await getAccount(req.currentUser.id);
 
-  if (!usersAcc) return next(handleError("User does not have an account", 400));
+  if (!usersAcc)
+    return next(
+      handleError(`User ${req.currentUser.id} does not have an account`, 400)
+    );
 
   // sufficient balance?
   const sufficientBal = usersAcc.balance >= amount ? true : false;

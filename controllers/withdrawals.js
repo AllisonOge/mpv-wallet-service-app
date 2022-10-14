@@ -24,7 +24,10 @@ exports.withdrawalsController = async (req, res, next) => {
   // get account
   const userAcc = await getAccount(req.currentUser.id);
 
-  if (!userAcc) return next(handleError("User does not have an account", 404));
+  if (!userAcc)
+    return next(
+      handleError(`User ${req.currentUser.id} does not have an account`, 404)
+    );
 
   // check balance
   const sufficientBal = userAcc.balance >= amount ? true : false;

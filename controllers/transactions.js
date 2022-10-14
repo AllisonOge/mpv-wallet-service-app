@@ -9,7 +9,6 @@ exports.transactionsController = (req, res, next) => {
     .from("accounts")
     .where({ user_id: currentUser.id })
     .then((account) => {
-      console.log(account);
       return database
         .select()
         .from("transactions")
