@@ -9,6 +9,7 @@ const authRouter = require("./routes/auth");
 const accountsRouter = require("./routes/accounts");
 const transactionsRouter = require("./routes/transactions");
 const transfersRouter = require("./routes/transfers");
+const withdrawalsRouter = require("./routes/withdrawals");
 
 const isAuth = require("./auth/isauth");
 
@@ -29,6 +30,7 @@ app.use("/api/v1/login", authRouter);
 app.use("/api/v1/accounts", isAuth, accountsRouter);
 app.use("/api/v1/transactions", isAuth, transactionsRouter);
 app.use("/api/v1/transfers", isAuth, transfersRouter);
+app.use("/api/v1/withdrawals", isAuth, withdrawalsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
