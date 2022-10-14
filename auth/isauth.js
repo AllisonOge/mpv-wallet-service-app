@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { secretKey, algorithm } = require("../configs");
 const database = require("../knex/database");
+const { handleError } = require("../utils/utils");
 
 const verifyAccessToken = async (token, res) => {
   const payload = jwt.decode(token, secretKey, { algorithms: [algorithm] });
@@ -24,15 +25,12 @@ const verifyAccessToken = async (token, res) => {
 module.exports = async (req, res, next) => {
   let authorization = req.header("authorization");
   if (!authorization)
-    return res
-      .status(401)
-      .send({ details: "Access Denied / Unauthorized request" });
+    return next(handleError("Access Denied / Unauthorized request", 401));
 
   const token = authorization.split(" ")[1];
   if (token === null || !token)
-    return res
-      .status(400)
-      .send({ details: "User's credentials could not be verified" });
+    return next(handleError("Invalid token", 422))
+
   const payload = await verifyAccessToken(token, res);
 
   database
@@ -42,5 +40,7 @@ module.exports = async (req, res, next) => {
     .then((user) => {
       req.currentUser = { ...user[0] };
       next()
+    }).catch(err => {
+      return next(handleError())
     });
 };

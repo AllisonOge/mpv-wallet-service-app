@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const database = require("./../knex/database");
 const config = require("../configs");
+const { handleError } = require("../utils/utils");
 
 const createAccessToken = (user) => {
   const to_encode = { id: user.id, exp: parseInt(config.accessTokenExpiresMins) };
@@ -14,10 +15,11 @@ exports.authController = (req, res, next) => {
   // validate request body
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    // TODO: throw error for error handling
-    return res.status(400).send({
-      details: errors.array(),
-    });
+    const errMessage = []
+    for(let err of errors.array()) {
+      errMessage.push(err.msg)
+    }
+    return next(handleError(errMessage, 422))
   }
   // find user in database
   database
@@ -45,5 +47,5 @@ exports.authController = (req, res, next) => {
         .header("auth-token", token)
         .send({ token: token, token_type: "Bearer" });
     })
-    .catch(console.log);
+    .catch(err => next(handleError()));
 };

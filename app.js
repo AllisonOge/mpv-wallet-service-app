@@ -7,8 +7,8 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const accountsRouter = require("./routes/accounts");
-const transactionsRouter = require("./routes/transactions")
-const transfersRouter = require("./routes/transfers")
+const transactionsRouter = require("./routes/transactions");
+const transfersRouter = require("./routes/transfers");
 
 const isAuth = require("./auth/isauth");
 
@@ -36,13 +36,8 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500).send({ error: err.message });
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).send({ details: err.message });
 });
 
 module.exports = app;
