@@ -16,10 +16,6 @@ exports.updateBalance = (newBalance, id) => {
     .update({ balance: parseFloat(newBalance) })
     .where({ id: parseInt(id) })
     .then((_) => true)
-    .catch((err) => {
-      console.log(err);
-      return false;
-    });
 };
 
 exports.getAccount = (id) => {
@@ -34,3 +30,9 @@ exports.getAccount = (id) => {
       return account[0];
     });
 };
+
+exports.handleError = (errMessage="Oops we failed to address this. It will be resolved", status=500) => {
+  const error = new Error(errMessage);
+  error.status = status;
+  return error
+}
