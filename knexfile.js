@@ -23,30 +23,9 @@ module.exports = {
       directory: __dirname + "./knex/seeds",
     },
   },
-
-  staging: {
-    client: "mysql",
-    connection: {
-      database: config.host,
-      user: config.user,
-      password: config.password,
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: "knex_migrations",
-    },
-  },
-
   production: {
     client: "mysql",
-    connection: {
-      database: config.host,
-      user: config.user,
-      password: config.password,
-    },
+    connection: process.env.CLEARDB_DATABASE_URL,
     pool: {
       min: 2,
       max: 10,
