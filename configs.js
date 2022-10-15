@@ -11,5 +11,5 @@ module.exports = {
     secretKey: process.env.SECRET_KEY,
     algorithm: process.env.ALGORITHM,
     accessTokenExpiresMins: process.env.ACCESS_TOKEN_EXPIRES_MINS,
-    environment: process.env.ENVIRONMENT
+    environment: process.env.NODE_ENV
 }
