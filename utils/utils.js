@@ -26,7 +26,7 @@ exports.getAccount = (id) => {
       wherBuilder.where("id", parseInt(id)).orWhere("user_id", parseInt(id));
     })
     .then((account) => {
-      console.log(account[0]);
+      // console.log(account[0]);
       return account[0];
     });
 };
