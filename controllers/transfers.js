@@ -43,7 +43,7 @@ exports.transfersController = async (req, res, next) => {
   // console.log(beneficiary);
   // does not exit
   if (!beneficiary)
-    return next(handleError(404, `Account ${beneficiaryId} not found`));
+    return next(handleError(`Account ${beneficiaryId} not found`, 404));
 
   if (usersAcc.id == beneficiary.id)
     return next(
