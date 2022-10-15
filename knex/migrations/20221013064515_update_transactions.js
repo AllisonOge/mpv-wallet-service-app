@@ -16,7 +16,7 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
   return knex.schema.table("transactions", (table) => {
-    table.dropForeign("accoun_id");
+    table.dropForeign("account_id");
     table.renameColumn("account_id", "user_id");
     table.foreign("user_id").references("id").inTable("users");
   });
