@@ -28,7 +28,7 @@ exports.transfersController = async (req, res, next) => {
 
   if (!usersAcc)
     return next(
-      handleError(`User ${req.currentUser.id} does not have an account`, 400)
+      handleError(`User ${req.currentUser.id} does not have an account`, 404)
     );
 
   // sufficient balance?
