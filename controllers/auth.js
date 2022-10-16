@@ -51,6 +51,6 @@ exports.authController = (req, res, next) => {
         .send({ token: token, token_type: "Bearer" });
     })
     .catch((err) =>
-      next(handleError(404, `User ${req.body.username} not found`))
+      next(handleError(`User ${req.body.username} not found`, 404))
     );
 };
