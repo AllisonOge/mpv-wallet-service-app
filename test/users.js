@@ -66,8 +66,6 @@ describe("Users", () => {
             .property("details")
             .equal(`Duplicate entry: ${newUser.username} already exist`);
 
-          // close connection pool
-          database.destroy();
           done();
         });
     });
