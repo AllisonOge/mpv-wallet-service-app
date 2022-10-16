@@ -1,4 +1,4 @@
-# mpv-wallet-service
+# mvp-wallet-service
 
 ## Introduction
 
@@ -71,7 +71,7 @@ HTTP Exceptions with `/transfers` endpoint
 
 - `HTTP_403_FORBIDDEN`: Amount is invalid: enter a value greater than 0
 
-- `HTTP_400_BAD_REQUEST`: User {id} does not have an account  
+- `HTTP_404_NOT_FOUND`: User {id} does not have an account  
 
 - `HTTP_409_CONFLICT`: Insufficient balance
 

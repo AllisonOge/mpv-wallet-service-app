@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.status(200).send({message: "Welcome to MPV wallet service API"});
+  res.status(200).send({message: "Welcome to MVP wallet service API"});
 });
 
 module.exports = router;

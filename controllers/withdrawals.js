@@ -47,5 +47,5 @@ exports.withdrawalsController = async (req, res, next) => {
   const newBal = userAcc.balance - amount;
   if (!(await updateBalance(newBal, userAcc.id))) return next(handleError());
 
-  res.status(201).send({ message: "Withdraw successful" });
+  res.status(201).send({ message: "Withdrawal successful" });
 };
