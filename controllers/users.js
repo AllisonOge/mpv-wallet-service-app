@@ -22,11 +22,10 @@ exports.usersController = async (req, res, next) => {
       email: req.body.username,
       password: hashedPassword,
     })
-    .returning("id")
     .into("users")
     .then((id) => {
       id = id[0];
-      res.status(200).send({ id, username: req.body.username });
+      res.status(201).send({ id, username: req.body.username });
     })
     .catch((error) => {
       // email already exist
