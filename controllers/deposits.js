@@ -42,5 +42,5 @@ exports.depositsController = async (req, res, next) => {
   const newBal = userAcc.balance + amount;
   if (!(await updateBalance(newBal, userAcc.id))) return next(handleError());
 
-  res.status(201).send({ details: "Deposit successful" });
+  res.status(201).send({ message: "Deposit successful" });
 };
