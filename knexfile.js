@@ -23,6 +23,23 @@ module.exports = {
       directory: __dirname + "./knex/seeds",
     },
   },
+  test: {
+    client: "mysql",
+    version: "14.14",
+    connection: {
+      host: config.host,
+      port: config.port,
+      user: config.user,
+      password: config.password,
+      database: "test_mvp_wallet_db",
+    },
+    migrations: {
+      directory: __dirname + "/knex/migrations",
+    },
+    seeds: {
+      directory: __dirname + "./knex/seeds",
+    },
+  },
   production: {
     client: "mysql",
     connection: process.env.CLEARDB_DATABASE_URL,
